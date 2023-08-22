@@ -10,14 +10,12 @@ const TableContent = ({text, value}) => {
 }
 
 const Statistics = ({good, neutral, bad}) => {
-  const all = good + neutral + bad
-  let positive = good / all * 100
-  let average = (good * 1 + bad * -1) / all
+  if (good === 0 && neutral === 0 && bad === 0)
+    return <div>No feedback given</div>
 
-  if (all === 0) {
-    average = 0
-    positive = 0
-  }
+  const all = good + neutral + bad
+  const positive = good / all * 100
+  const average = (good * 1 + bad * -1) / all
 
   return (
     <div>
