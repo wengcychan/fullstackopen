@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 const Header = ({text}) => <h1>{text}</h1>
 
-const TableContent = ({text, value}) => {
+const StatisticLine = ({text, value}) => {
     if (text === "positive")
       return <tr><td>{text} {value} %</td></tr>
     else
@@ -21,12 +21,12 @@ const Statistics = ({good, neutral, bad}) => {
     <div>
       <table>
         <tbody>
-          <TableContent text="good" value={good}/>
-          <TableContent text="neutral" value={neutral}/>
-          <TableContent text="bad" value={bad}/>
-          <TableContent text="all" value={all}/>
-          <TableContent text="average" value={average}/>
-          <TableContent text="positive" value={positive}/>
+          <StatisticLine text="good" value={good}/>
+          <StatisticLine text="neutral" value={neutral}/>
+          <StatisticLine text="bad" value={bad}/>
+          <StatisticLine text="all" value={all}/>
+          <StatisticLine text="average" value={average}/>
+          <StatisticLine text="positive" value={positive}/>
         </tbody>
       </table>
     </div>
