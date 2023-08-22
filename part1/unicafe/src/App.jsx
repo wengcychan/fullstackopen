@@ -2,12 +2,12 @@ import { useState } from 'react'
 
 const Header = ({text}) => <h1>{text}</h1>
 
-const StatisticLine = ({text, value}) => {
-    if (text === "positive")
-      return <tr><td>{text} {value} %</td></tr>
-    else
-      return <tr><td>{text} {value}</td></tr>
-}
+const StatisticLine = ({text, value}) => (
+  <tr>
+    <td>{text}</td>
+    <td>{text === 'positive' ? `${value} %` : value}</td>
+  </tr>
+)
 
 const Statistics = ({good, neutral, bad}) => {
   if (good === 0 && neutral === 0 && bad === 0)
