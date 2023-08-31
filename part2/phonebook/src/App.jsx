@@ -3,14 +3,14 @@ import phonebookService from './services/phonebook'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
-import Notification from './components/Notification'
+import Message from './components/Message'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
-  const [messageName, setMessageName] = useState(null)
+  const [message, setMessage] = useState(null)
 
   const hook = () => {
 
@@ -35,8 +35,13 @@ const App = () => {
           .update(targetPerson.id, personObject)
           .then(returnedPerson => {
             setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
-            setMessageName(returnedPerson.name)
-            setTimeout(() => setMessageName(null), 5000)
+            setMessage(`Added ${returnedPerson.name}`)
+            setTimeout(() => {setMessage(null)}, 5000)
+          })
+          .catch ( error => {
+            setMessage(`Information of ${targetPerson.name} has already been removed from server`)
+            setTimeout(() => {setMessage(null)}, 5000)
+            setPersons(persons.filter(n => n.id !== targetPerson.id))
           })
       }
     }
@@ -50,8 +55,8 @@ const App = () => {
         .create(personObject)
         .then(returnedPerson => {
           setPersons(persons.concat(returnedPerson))
-          setMessageName(returnedPerson.name)
-          setTimeout(() => setMessageName(null), 5000)
+          setMessage(`Added ${returnedPerson.name}`)
+          setTimeout(() => {setMessage(null)}, 5000)
         })
     }
 
@@ -84,7 +89,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification name={messageName}/>
+      <Message message={message}/>
       <Filter filterName={filterName} handleFilterName={handleFilterName} />
       <h2>Add New</h2>
       <PersonForm addName={addName} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
