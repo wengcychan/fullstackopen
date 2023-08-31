@@ -56,14 +56,23 @@ const App = () => {
     setFilterName(event.target.value)
   }
 
+  const handleDetele = ( name, id ) => {
+    if (confirm(`Delete ${name} ? `)) {
+      phonebookService
+        .remove(id)
+        .then()
+      setPersons(persons.filter(n => n.id !== id))
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
       <Filter filterName={filterName} handleFilterName={handleFilterName} />
       <h2>Add New</h2>
       <PersonForm addName={addName} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
-      <h2>Numbers</h2>
-      <Persons persons={persons} filterName={filterName} />
+      <h2>Numbers</h2> 
+      <Persons persons={persons} filterName={filterName} handleDetele={handleDetele}/>
     </div>
   )
 }
