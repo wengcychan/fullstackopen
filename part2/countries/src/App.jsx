@@ -10,6 +10,7 @@ const App = () => {
   const [printCountryNames, setPrintCountryNames] = useState(null)
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [countryContent, setCountryContent] = useState(null)
+  const [foundCountry, setFoundCountry] = useState(false)
 
 
   const getAllCountries = () => {
@@ -36,6 +37,7 @@ const App = () => {
 
 
   const handleCountry = (event) => {
+
     setCountry(event.target.value)
 
     if (event.target.value.length === 0)
@@ -44,21 +46,31 @@ const App = () => {
       const filterCountries = allCountryNames.filter(country => country.toLowerCase().includes(event.target.value.toLowerCase()))
       setPrintCountryNames(filterCountries)
 
-      if (filterCountries.length === 1 && selectedCountry === null)
+      if (filterCountries.length === 1 && foundCountry === false) {
         setSelectedCountry(filterCountries[0])
+        setFoundCountry(true)
+      }
       else if (filterCountries.length !== 1) {
         setSelectedCountry(null)
         setCountryContent(null)
+        setFoundCountry(false)
       }
     }
   }
 
+
+  const handleShow = ( countryName )=> {
+    setSelectedCountry(countryName)
+    setPrintCountryNames([countryName])
+  }
+
+  
   return (
     <div>
       <div>
         find countries
         <input value={country} onChange={handleCountry}/>
-        <CountryList countries={printCountryNames}/>
+        <CountryList countries={printCountryNames} handleShow={handleShow}/>
         <CountryContent countryContent={countryContent}/>
       </div>
     </div>
