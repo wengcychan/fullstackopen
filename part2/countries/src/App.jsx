@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import CountryContent from './components/CountryContent'
 import CountryList from './components/CountryList'
 import countrySerive from './services/country'
+import weatherService from './services/weather'
 
 const App = () => {
 
@@ -11,7 +12,7 @@ const App = () => {
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [countryContent, setCountryContent] = useState(null)
   const [foundCountry, setFoundCountry] = useState(false)
-
+  const [weather, setWeather] = useState(null)
 
   const getAllCountries = () => {
     countrySerive
@@ -30,6 +31,14 @@ const App = () => {
         .getSelected(selectedCountry)
         .then(content => {
           setCountryContent(content)
+          weatherService
+            .getWeather(content.capitalInfo.latlng[0], content.capitalInfo.latlng[1])
+            .then(content => {
+              setWeather(content)
+            })
+            .catch(error => {
+              setWeather(null)
+            })
         })
     }
   }
@@ -52,6 +61,7 @@ const App = () => {
       }
       else if (filterCountries.length !== 1) {
         setSelectedCountry(null)
+        setWeather(null)
         setCountryContent(null)
         setFoundCountry(false)
       }
@@ -64,14 +74,14 @@ const App = () => {
     setPrintCountryNames([countryName])
   }
 
-  
+
   return (
     <div>
       <div>
         find countries
         <input value={country} onChange={handleCountry}/>
         <CountryList countries={printCountryNames} handleShow={handleShow}/>
-        <CountryContent countryContent={countryContent}/>
+        <CountryContent countryContent={countryContent} weather={weather}/>
       </div>
     </div>
   )
