@@ -12,53 +12,48 @@ const App = () => {
   const [filterName, setFilterName] = useState('')
   const [message, setMessage] = useState(null)
 
-  const hook = () => {
 
+  useEffect(() => {
     phonebookService
       .getAll()
       .then(initalPhoneBook => {
         setPersons(initalPhoneBook)
       })
-  }
+    }, [])
 
-  useEffect(hook, [])
+
+  const updatePerson = (person) => {
+      if (confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+
+        phonebookService
+          .update(person.id, {...person, number: newNumber})
+          .then(person => {
+            setPersons(persons.map(n => n.id !== person.id ? n : person))
+            setMessage(`Added ${person.name}`)
+            setTimeout(() => {setMessage(null)}, 5000)
+          })
+          .catch ( error => {
+            setMessage(`Information of ${person.name} has already been removed from server`)
+            setTimeout(() => {setMessage(null)}, 5000)
+            setPersons(persons.filter(n => n.id !== person.id))
+          })
+      }
+  }
 
   const addName = (event) => {
     event.preventDefault();
 
-    const targetPerson = persons.find((person) => person.name === newName)
-    if (targetPerson) {
-      if (confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
-        const personObject = {...targetPerson, number: newNumber}
-        
-        phonebookService
-          .update(targetPerson.id, personObject)
-          .then(returnedPerson => {
-            setPersons(persons.map(person => person.id !== returnedPerson.id ? person : returnedPerson))
-            setMessage(`Added ${returnedPerson.name}`)
-            setTimeout(() => {setMessage(null)}, 5000)
-          })
-          .catch ( error => {
-            setMessage(`Information of ${targetPerson.name} has already been removed from server`)
-            setTimeout(() => {setMessage(null)}, 5000)
-            setPersons(persons.filter(n => n.id !== targetPerson.id))
-          })
-      }
-    }
-    else {
-      const personObject = {
-        name: newName,
-        number: newNumber
-      }
-
+    const person = persons.find((person) => person.name === newName)
+    if (person)
+      updatePerson(person)
+    else
       phonebookService
-        .create(personObject)
-        .then(returnedPerson => {
-          setPersons(persons.concat(returnedPerson))
-          setMessage(`Added ${returnedPerson.name}`)
+        .create({ name: newName, number: newNumber})
+        .then(person => {
+          setPersons(persons.concat(person))
+          setMessage(`Added ${person.name}`)
           setTimeout(() => {setMessage(null)}, 5000)
         })
-    }
 
     setNewName('')
     setNewNumber('')
