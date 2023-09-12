@@ -9,6 +9,9 @@ blogRoute.get('/', async (request, response) => {
 blogRoute.post('/', (request, response) => {
 	const body = request.body
 
+	if (!body.title || !body.url)
+		response.status(400).end()
+
 	if (!body.likes)
 		body.likes = 0
 
