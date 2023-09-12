@@ -7,7 +7,12 @@ blogRoute.get('/', async (request, response) => {
 })
 
 blogRoute.post('/', (request, response) => {
-	const blog = new Blog(request.body)
+	const body = request.body
+
+	if (!body.likes)
+		body.likes = 0
+
+	const blog = new Blog(body)
 
 	const savedBlog = blog.save()
 	response.status(201).json(savedBlog)
