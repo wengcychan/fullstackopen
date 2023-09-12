@@ -98,6 +98,23 @@ test('status code 400 is returned if the url is missing', async() => {
 	expect(blogAtEnd).toHaveLength(helper.initialBlogs.length)
 })
 
+test('a blog is deleted', async() => {
+	const blogAtStart = await helper.blogsInDb()
+	const blogToDelete = blogAtStart[0]
+
+	await api
+		.delete(`/api/blogs/${blogToDelete.id}`)
+		.expect(204)
+
+	const blogAtEnd = await helper.blogsInDb()
+
+	expect(blogAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+
+	const titles = blogAtEnd.map(blog => blog.title)
+
+	expect(titles).not.toContain(blogToDelete.title)
+})
+
 afterAll(async () => {
 	await mongoose.connection.close()
 })
