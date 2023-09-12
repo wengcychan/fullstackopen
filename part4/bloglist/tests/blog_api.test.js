@@ -59,8 +59,10 @@ test('default value of likes is 0', async () => {
 		.send(newBlog)
 
 	const blogAtEnd = await helper.blogsInDb()
-	const targetBlog = blogAtEnd.find(blog => blog.title === newBlog.title)
 
+	expect(blogAtEnd).toHaveLength(helper.initialBlogs.length + 1)
+
+	const targetBlog = blogAtEnd.find(blog => blog.title === newBlog.title)
 	expect(targetBlog.likes).toBe(0)
 })
 
@@ -75,6 +77,9 @@ test('status code 400 is returned if the title is missing', async() => {
 		.post('/api/blogs')
 		.send(newBlog)
 		.expect(400)
+
+	const blogAtEnd = await helper.blogsInDb()
+	expect(blogAtEnd).toHaveLength(helper.initialBlogs.length)
 })
 
 test('status code 400 is returned if the url is missing', async() => {
@@ -88,6 +93,9 @@ test('status code 400 is returned if the url is missing', async() => {
 		.post('/api/blogs')
 		.send(newBlog)
 		.expect(400)
+
+	const blogAtEnd = await helper.blogsInDb()
+	expect(blogAtEnd).toHaveLength(helper.initialBlogs.length)
 })
 
 afterAll(async () => {
