@@ -42,7 +42,7 @@ Part 2 continues with the introduction to React, which covers rendering data col
 
 Part 3 focuses on functionality on the server side of the stack. The topics includes implementing REST API using Node.js with the Express library, storing application data in a MongoDB database, and deployment of application to the internet.
 
-- **phonebook** 
+- **[phonebook](part3/phonebook/)** 
 
 ### Part 4 - Testing Express servers, user administration
 
