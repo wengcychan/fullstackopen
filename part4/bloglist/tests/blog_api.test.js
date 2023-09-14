@@ -44,7 +44,7 @@ test('a blog is added', async () => {
 	expect(blogAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
 	const titles = blogAtEnd.map(blog => blog.title)
-	expect(titles).toContain('New blog')
+	expect(titles).toContain(newBlog.title)
 })
 
 test('default value of likes is 0', async () => {

@@ -10,17 +10,15 @@ blogRoute.post('/', async (request, response) => {
 	const body = request.body
 
 	if (!body.title || !body.url)
-		response.status(400).end()
-	else {
+		return response.status(400).end()
 
-		if (!body.likes)
-			body.likes = 0
+	if (!body.likes)
+		body.likes = 0
 
-		const blog = new Blog(body)
+	const blog = new Blog(body)
 
-		const savedBlog = await blog.save()
-		response.status(201).json(savedBlog)
-	}
+	const savedBlog = await blog.save()
+	response.status(201).json(savedBlog)
 })
 
 blogRoute.delete('/:id', async (request, response) => {
