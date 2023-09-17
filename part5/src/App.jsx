@@ -34,10 +34,11 @@ const App = () => {
 
   useEffect(() => {
     if (addBlogs === true) {
-      blogService.getAll().then(blogs =>
+      blogService.getAll().then(blogs => {
+        blogs.sort((a, b) => a.likes - b.likes)
         setBlogs( blogs )
-      )
-      setAddBlogs(false)
+        setAddBlogs(false)
+      })
     }
   }, [addBlogs])
 
