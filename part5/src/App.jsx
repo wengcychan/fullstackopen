@@ -64,7 +64,7 @@ const App = () => {
     } catch (exception) {
       setMessage('wrong username or password')
       setTimeout(() => setMessage(null)
-      , 5000)
+        , 5000)
     }
   }
 
@@ -82,19 +82,19 @@ const App = () => {
       setBlogs(blogs.concat(returnedBlog))
       setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
       setTimeout(() => setMessage(null)
-      , 5000)
+        , 5000)
     } catch (exception) {
       setMessage('missing title or url')
       setTimeout(() => setMessage(null)
-      , 5000)
+        , 5000)
     }
   }
 
   const updateBlog = async (newBlogObject, id) => {
-      const returnedBlog = await blogService.update(newBlogObject, id)
-      setReviseBlogs(true)     
-      setMessage(`likes of blog ${returnedBlog.title} by ${returnedBlog.author} increased`)
-      setTimeout(() => setMessage(null)
+    const returnedBlog = await blogService.update(newBlogObject, id)
+    setReviseBlogs(true)
+    setMessage(`likes of blog ${returnedBlog.title} by ${returnedBlog.author} increased`)
+    setTimeout(() => setMessage(null)
       , 5000)
   }
 
@@ -106,19 +106,19 @@ const App = () => {
         setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
         setMessage(`blog ${blogToDelete.title} by ${blogToDelete.author} removed`)
         setTimeout(() => setMessage(null)
-        , 5000)
+          , 5000)
       } catch (exception) {
-        setMessage(`invalid token`)
+        setMessage('invalid token')
         setTimeout(() => setMessage(null)
-        , 5000)
+          , 5000)
       }
+    }
   }
-}
 
   const loginForm = () => (
     <div>
       <h1>log in to application</h1>
-      <Notification message={message} />      
+      <Notification message={message} />
       <form onSubmit={handleLogin}>
         <div>
           username
@@ -127,7 +127,7 @@ const App = () => {
             value={username}
             name="Username"
             onChange={({ target }) => setUsername(target.value)}
-            />
+          />
         </div>
         <div>
           password
@@ -136,7 +136,7 @@ const App = () => {
             value={password}
             name="Password"
             onChange={({ target }) => setPassword(target.value)}
-            />
+          />
         </div>
         <button type="submit">login</button>
       </form>

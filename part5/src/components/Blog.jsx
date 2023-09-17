@@ -35,10 +35,10 @@ const Blog = ({ blog, updateBlog, user, deleteBlog }) => {
   }
 
   const showRemove = () => (
-      <div>
-        <button onClick={handleDelete}>remove</button>
-      </div>
-    )
+    <div>
+      <button onClick={handleDelete}>remove</button>
+    </div>
+  )
 
   return (
     <div style={blogStyle}>
@@ -53,6 +53,7 @@ const Blog = ({ blog, updateBlog, user, deleteBlog }) => {
         <div>{blog.user.name}</div>
         <div>{blog.user.username === user.username && showRemove()}</div>
       </div>
-  </div>
-)}
+    </div>
+  )}
+
 export default Blog
