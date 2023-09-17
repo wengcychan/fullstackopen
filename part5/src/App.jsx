@@ -3,6 +3,25 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
+const Notification = ({ message }) => {
+  const messageStyle = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+  if (message === null)
+    return null
+  return (
+    <div style={messageStyle}>
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
@@ -11,6 +30,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -38,7 +58,9 @@ const App = () => {
       setUsername('')
       setPassword('')
     } catch (exception) {
-      console.log(exception)
+      setMessage('wrong username or password')
+      setTimeout(() => setMessage(null)
+      , 5000)
     }
   }
 
@@ -55,14 +77,20 @@ const App = () => {
       setTitle('')
       setAuthor('')
       setUrl('')
+      setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
+      setTimeout(() => setMessage(null)
+      , 5000)
     } catch (exception) {
-      console.log(exception)
+      setMessage('missing title or url')
+      setTimeout(() => setMessage(null)
+      , 5000)
     }
   }
 
   const loginForm = () => (
     <div>
-      <h1>log in to application</h1>      
+      <h1>log in to application</h1>
+      <Notification message={message} />      
       <form onSubmit={handleLogin}>
         <div>
           username
@@ -92,6 +120,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={message} />
       <form onClick={handleLogout}>
         {user.name} logged in
         <button type="click">
