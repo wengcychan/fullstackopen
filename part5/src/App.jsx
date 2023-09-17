@@ -26,21 +26,21 @@ const Notification = ({ message }) => {
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [addBlogs, setAddBlogs] = useState(true)
+  const [reviseBlogs, setReviseBlogs] = useState(true)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
 
   useEffect(() => {
-    if (addBlogs === true) {
+    if (reviseBlogs === true) {
       blogService.getAll().then(blogs => {
         blogs.sort((a, b) => a.likes - b.likes)
         setBlogs( blogs )
-        setAddBlogs(false)
+        setReviseBlogs(false)
       })
     }
-  }, [addBlogs])
+  }, [reviseBlogs])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -78,7 +78,7 @@ const App = () => {
     try {
       blogFormRef.current.toggleVisibility()
       const returnedBlog = await blogService.create(blogObject)
-      setAddBlogs(true)
+      setReviseBlogs(true)
       setBlogs(blogs.concat(returnedBlog))
       setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
       setTimeout(() => setMessage(null)
@@ -92,11 +92,28 @@ const App = () => {
 
   const updateBlog = async (newBlogObject, id) => {
       const returnedBlog = await blogService.update(newBlogObject, id)
-      setAddBlogs(true)     
+      setReviseBlogs(true)     
       setMessage(`likes of blog ${returnedBlog.title} by ${returnedBlog.author} increased`)
       setTimeout(() => setMessage(null)
       , 5000)
   }
+
+  const deleteBlog = async (blogToDelete) => {
+    if (window.confirm(`Remove blog ${blogToDelete.title} by ${blogToDelete.author}`)) {
+      try {
+        await blogService.remove(blogToDelete.id)
+        setReviseBlogs(true)
+        setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
+        setMessage(`blog ${blogToDelete.title} by ${blogToDelete.author} removed`)
+        setTimeout(() => setMessage(null)
+        , 5000)
+      } catch (exception) {
+        setMessage(`invalid token`)
+        setTimeout(() => setMessage(null)
+        , 5000)
+      }
+  }
+}
 
   const loginForm = () => (
     <div>
@@ -142,7 +159,7 @@ const App = () => {
         <BlogForm createBlog={addBlog} />
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} user={user} deleteBlog={deleteBlog} />
       )}
     </div>
   )
