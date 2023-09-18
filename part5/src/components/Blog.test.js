@@ -54,3 +54,30 @@ test('<Blog /> shows the URL and number of likes when the button controlling the
   const div = container.querySelector('.blogDetails')
   expect(div).not.toHaveStyle('display: none')
 })
+
+test('<Blog /> calls event handler twice when clicking the like button twice', async () => {
+  const blog = {
+    title: 'New blog',
+    author: 'New author',
+    url: 'https://newblog.com/',
+    user: '1',
+    likes: 15
+  }
+
+  const user = {
+    username: 'test',
+    name: 'test',
+    password: '12345'
+  }
+
+  const updateBlog = jest.fn()
+
+  render(<Blog blog={blog} user={user} updateBlog={updateBlog} />)
+
+  const userEv = userEvent.setup()
+  const button = screen.getByText('like')
+  await userEv.click(button)
+  await userEv.click(button)
+
+  expect(updateBlog.mock.calls).toHaveLength(2)
+})
