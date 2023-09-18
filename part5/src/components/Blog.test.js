@@ -1,6 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 test('<Blog /> only renders title and author, but not the URL or number of likes by default', () => {
@@ -20,10 +21,36 @@ test('<Blog /> only renders title and author, but not the URL or number of likes
 
   const { container } = render(<Blog blog={blog} user={user} />)
 
-  const element = container.querySelector('.blog')
+  const blogInfo = container.querySelector('.blogInfo')
 
-  expect(element).toHaveTextContent('New blog')
-  expect(element).toHaveTextContent('New author')
-  expect(element).not.toHaveTextContent('https://newblog.com/')
-  expect(element).not.toEqual(15)
+  expect(blogInfo).toHaveTextContent('New blog')
+  expect(blogInfo).toHaveTextContent('New author')
+
+  const blogDetails = container.querySelector('.blogDetails')
+  expect(blogDetails).toHaveStyle('display: none')
+})
+
+test('<Blog /> shows the URL and number of likes when the button controlling the shown details has been clicked', async () => {
+  const blog = {
+    title: 'New blog',
+    author: 'New author',
+    url: 'https://newblog.com/',
+    user: '1',
+    likes: 15
+  }
+
+  const user = {
+    username: 'test',
+    name: 'test',
+    password: '12345'
+  }
+
+  const { container } = render(<Blog blog={blog} user={user} />)
+
+  const userEv = userEvent.setup()
+  const button = screen.getByText('view')
+  await userEv.click(button)
+
+  const div = container.querySelector('.blogDetails')
+  expect(div).not.toHaveStyle('display: none')
 })
