@@ -73,16 +73,24 @@ describe('Blog app', function() {
           cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
           cy.contains('logout').click()
           cy.login({ username: user.username, password: user.password })
-          cy.createBlog({ title: 'Anthor new blog', author: 'Anthor new author', url: 'https://anothernewblog.com/' })
+          cy.createBlog({ title: 'Another new blog', author: 'Another new author', url: 'https://anothernewblog.com/' })
           cy.contains('logout').click()
           cy.login({ username: 'mluukkai', password: 'salainen' })
         })
 
-        it.only('user who created a blog can delete it', function() {
+        it('user who created a blog can delete it', function() {
           cy.contains('New blog').contains('view').click()
           cy.contains('New blog').parent().parent().find('.blogDetails').contains('remove').click()
 
           cy.get('.blog').should('not.contain', 'New blog')
+        })
+
+        it('only the creator can see the delete button of a blog', function() {
+          cy.contains('New blog').contains('view').click()
+          cy.contains('New blog').parent().contains('remove')
+
+          cy.contains('Another new blog').contains('view').click()
+          cy.contains('Another new blog').parent().should('not.contain', 'remove')
         })
       })
     })
