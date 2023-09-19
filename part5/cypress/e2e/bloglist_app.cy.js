@@ -56,11 +56,34 @@ describe('Blog app', function() {
         cy.createBlog({ title: 'New blog', author: 'New author', url: 'https://newblog.com/' })
       })
 
-      it.only('user can like a blog', function() {
+      it('user can like a blog', function() {
         cy.contains('view').click()
         cy.contains('like').click()
 
         cy.get('.blogDetails').contains('likes').contains(1)
+      })
+
+      describe('delete blog', function() {
+        beforeEach(function() {
+          const user = {
+            name: 'test user',
+            username: 'test',
+            password: 'testpassword'
+          }
+          cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+          cy.contains('logout').click()
+          cy.login({ username: user.username, password: user.password })
+          cy.createBlog({ title: 'Anthor new blog', author: 'Anthor new author', url: 'https://anothernewblog.com/' })
+          cy.contains('logout').click()
+          cy.login({ username: 'mluukkai', password: 'salainen' })
+        })
+
+        it.only('user who created a blog can delete it', function() {
+          cy.contains('New blog').contains('view').click()
+          cy.contains('New blog').parent().parent().find('.blogDetails').contains('remove').click()
+
+          cy.get('.blog').should('not.contain', 'New blog')
+        })
       })
     })
   })
