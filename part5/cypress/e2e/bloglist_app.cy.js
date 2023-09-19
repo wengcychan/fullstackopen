@@ -1,13 +1,13 @@
 describe('Blog app', function() {
   beforeEach(function() {
-    cy.request('POST', 'http://localhost:3003/api/testing/reset')
+    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`)
     const user = {
       name: 'Matti Luukkainen',
       username: 'mluukkai',
       password: 'salainen'
     }
-    cy.request('POST', 'http://localhost:3003/api/users', user)
-    cy.visit('http://localhost:5173')
+    cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+    cy.visit('')
   })
 
   it('Login form is shown', function() {
@@ -37,9 +37,7 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.get('#username').type('mluukkai')
-      cy.get('#password').type('salainen')
-      cy.get('#login-button').click()
+      cy.login({ username: 'mluukkai', password: 'salainen' })
     })
 
     it('A blog can be created', function() {
@@ -51,6 +49,19 @@ describe('Blog app', function() {
       cy.get('#create-button').click()
 
       cy.contains('New blog New author')
+    })
+
+    describe('When created new blog', function() {
+      beforeEach(function() {
+        cy.createBlog({ title: 'New blog', author: 'New author', url: 'https://newblog.com/' })
+      })
+
+      it.only('user can like a blog', function() {
+        cy.contains('view').click()
+        cy.contains('like').click()
+
+        cy.get('.blogDetails').contains('likes').contains(1)
+      })
     })
   })
 })
