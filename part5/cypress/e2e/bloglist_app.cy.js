@@ -93,6 +93,37 @@ describe('Blog app', function() {
           cy.contains('Another new blog').parent().should('not.contain', 'remove')
         })
       })
+
+      describe('likes are in order', function() {
+        beforeEach(function() {
+          const user = {
+            name: 'test user',
+            username: 'test',
+            password: 'testpassword'
+          }
+          cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+          cy.contains('logout').click()
+          cy.login({ username: user.username, password: user.password })
+          cy.createBlog({ title: 'Another new blog', author: 'Another new author', url: 'https://anothernewblog.com/' })
+          cy.contains('logout').click()
+          cy.login({ username: 'mluukkai', password: 'salainen' })
+        })
+
+        it('blogs are ordered according to likes with the blog with the most likes being first', function() {
+          cy.get('.blogInfo').contains('New blog').contains('view').click()
+          cy.get('.blogInfo').contains('New blog').parent().contains('like').click()
+          cy.get('.blogInfo').contains('New blog').parent().contains('likes 1')
+          cy.get('.blogInfo').contains('Another new blog').contains('view').click()
+          cy.get('.blogInfo').contains('Another new blog').parent().contains('likes 0')
+          cy.get('.blogInfo').contains('Another new blog').parent().contains('like').click()
+          cy.get('.blogInfo').contains('Another new blog').parent().contains('likes 1')
+          cy.get('.blogInfo').contains('Another new blog').parent().contains('like').click()
+          cy.get('.blogInfo').contains('Another new blog').parent().contains('likes 2')
+
+          cy.get('.blog').eq(0).should('contain', 'Another new blog')
+          cy.get('.blog').eq(1).should('contain', 'New blog')
+        })
+      })
     })
   })
 })

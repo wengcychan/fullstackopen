@@ -35,7 +35,7 @@ const App = () => {
   useEffect(() => {
     if (reviseBlogs === true) {
       blogService.getAll().then(blogs => {
-        blogs.sort((a, b) => a.likes - b.likes)
+        blogs.sort((a, b) => b.likes - a.likes)
         setBlogs( blogs )
         setReviseBlogs(false)
       })
