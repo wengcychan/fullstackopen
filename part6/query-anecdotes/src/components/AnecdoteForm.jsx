@@ -12,19 +12,22 @@ const AnecdoteForm = () => {
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData({ queryKey: ['anecdotes'] })
       queryClient.setQueryData({ queryKey: ['anecdotes'] }, anecdotes.concat(newAnecdote))
-    }}
-  )
+      dispatch({ type: 'SET_NOTIFICATION', payload: `anecdote '${newAnecdote.content}' added` })
+      setTimeout(() => dispatch({ type: 'SET_NOTIFICATION', payload: null })
+      , 5000)
+    },
+    onError: (error) => {
+      dispatch({ type: 'SET_NOTIFICATION', payload: 'too short anecdote, must have length 5 or more' })
+      setTimeout(() => dispatch({ type: 'SET_NOTIFICATION', payload: null })
+      , 5000)     
+    },
+  })
 
   const onCreate = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    if (content.length >= 5) {
-      newMutationAnecdote.mutate({ content, votes: 0 })
-      dispatch({ type: 'SET_NOTIFICATION', payload: `anecdote '${content}' added` })
-      setTimeout(() => dispatch({ type: 'SET_NOTIFICATION', payload: null })
-      , 5000)
-    }
+    newMutationAnecdote.mutate({ content, votes: 0 })
   }
 
   return (
