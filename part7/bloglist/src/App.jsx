@@ -3,27 +3,20 @@ import Blogs from './components/Blogs'
 import Users from './components/Users'
 import User from './components/User'
 import Blog from './components/Blog'
+import Navigation from './components/Navigation'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
-import userService from './services/users'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+import Button from 'react-bootstrap/Button'
 
 const App = () => {
-
-  const [users, setUsers] = useState([])
-
-  useEffect(() => {
-    userService.getAll()
-    .then(users => setUsers(users))
-  }, [])
-
   const dispatch = useDispatch()
 
-  const user = useSelector(state => state.user)
+  const user = useSelector((state) => state.user)
 
   useEffect(() => {
     dispatch(initializeBlogs())
@@ -44,20 +37,26 @@ const App = () => {
   return (
     <div>
       <Router>
-      <Link to="/">blogs</Link>
-      <Link to="/users">users</Link>
-      <form onClick={handleLogout}>
-        {user.name} logged in
-        <button type="click">logout</button>
-      </form>
-      <h2>blog app</h2>
-      <Notification />
-        <Routes>
-          <Route path="/" element={<Blogs />} />
-          <Route path="/users" element={<Users users={ users } />} />
-          <Route path="/users/:id" element={<User users={ users } />} />
-          <Route path="/blogs/:id" element={<Blog />} />
-        </Routes>
+        <Navigation />
+
+        <div className="container">
+          <form onClick={handleLogout} className="mb-5">
+            <div className="mb-1">{user.name} logged in</div>
+            <Button variant="primary" type="click">
+              logout
+            </Button>
+          </form>
+
+          <h2 className="mb-3">Blog app</h2>
+
+          <Notification />
+          <Routes>
+            <Route path="/" element={<Blogs />} />
+            <Route path="/users" element={<Users />} />
+            <Route path="/users/:id" element={<User />} />
+            <Route path="/blogs/:id" element={<Blog />} />
+          </Routes>
+        </div>
       </Router>
     </div>
   )

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 const BlogForm = ({ blogFormRef }) => {
   const [title, setTitle] = useState('')
@@ -11,7 +13,7 @@ const BlogForm = ({ blogFormRef }) => {
 
   const addBlog = async (event) => {
     event.preventDefault()
-  
+
     blogFormRef.current.toggleVisibility()
     dispatch(createBlog({ title, author, url }))
 
@@ -22,11 +24,12 @@ const BlogForm = ({ blogFormRef }) => {
 
   return (
     <div>
-      <h2>create new</h2>
-      <form onSubmit={addBlog}>
-        <div>
-          title:
-          <input
+      <h3>create new</h3>
+
+      <Form onSubmit={addBlog}>
+        <Form.Group className="mb-3">
+          <Form.Label>title:</Form.Label>
+          <Form.Control
             type="text"
             value={title}
             name="Title"
@@ -34,10 +37,11 @@ const BlogForm = ({ blogFormRef }) => {
             onChange={({ target }) => setTitle(target.value)}
             placeholder="write title here"
           />
-        </div>
-        <div>
-          author:
-          <input
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>author:</Form.Label>
+          <Form.Control
             type="text"
             value={author}
             name="Author"
@@ -45,10 +49,11 @@ const BlogForm = ({ blogFormRef }) => {
             onChange={({ target }) => setAuthor(target.value)}
             placeholder="write author here"
           />
-        </div>
-        <div>
-          url:
-          <input
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+          <Form.Label>url:</Form.Label>
+          <Form.Control
             type="text"
             value={url}
             name="Url"
@@ -56,13 +61,12 @@ const BlogForm = ({ blogFormRef }) => {
             onChange={({ target }) => setUrl(target.value)}
             placeholder="write url here"
           />
-        </div>
-        <div>
-          <button type="submit" id="create-button">
-            create
-          </button>
-        </div>
-      </form>
+        </Form.Group>
+
+        <Button className="mb-3" variant="primary" type="submit" id="create-button">
+          create
+        </Button>
+      </Form>
     </div>
   )
 }
