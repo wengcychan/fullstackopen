@@ -28,7 +28,7 @@ export const initializeBlogs = () => {
 	}
 }
 
-export const insertBlog = (blogObject) => {
+export const createBlog = (blogObject) => {
 	return async dispatch => {
 		try {
 			const returnedBlog = await blogService.create(blogObject)

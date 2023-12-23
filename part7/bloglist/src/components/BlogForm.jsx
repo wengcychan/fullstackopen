@@ -1,14 +1,20 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = ({ blogFormRef }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
+  const dispatch = useDispatch()
+
   const addBlog = async (event) => {
     event.preventDefault()
+  
+    blogFormRef.current.toggleVisibility()
+    dispatch(createBlog({ title, author, url }))
 
-    createBlog({ title, author, url })
     setTitle('')
     setAuthor('')
     setUrl('')
