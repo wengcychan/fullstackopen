@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
 import User from './components/User'
+import Blog from './components/Blog'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
@@ -50,9 +51,10 @@ const App = () => {
       </form>
       <Router>
         <Routes>
-          <Route path="/" element={<Blogs />}/>
-          <Route path="/users" element={<Users users={ users } />}/>
-          <Route path="/users/:id" element={<User users={ users } />}></Route>
+          <Route path="/" element={<Blogs />} />
+          <Route path="/users" element={<Users users={ users } />} />
+          <Route path="/users/:id" element={<User users={ users } />} />
+          <Route path="/blogs/:id" element={<Blog />} />
         </Routes>
       </Router>
     </div>
