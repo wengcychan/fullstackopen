@@ -4,6 +4,10 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs, insertBlog, removeBlog, addLikes } from './reducers/blogReducer'
+import { setUser } from './reducers/userReducer'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Notification = ({ message }) => {
   const messageStyle = {
@@ -20,28 +24,23 @@ const Notification = ({ message }) => {
 }
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
-  const [reviseBlogs, setReviseBlogs] = useState(true)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
+
+  const dispatch = useDispatch()
+  const message = useSelector(state => state.notification)
+  const blogs = useSelector(state => state.blogs)
+  const user = useSelector(state => state.user)
 
   useEffect(() => {
-    if (reviseBlogs === true) {
-      blogService.getAll().then((blogs) => {
-        blogs.sort((a, b) => b.likes - a.likes)
-        setBlogs(blogs)
-        setReviseBlogs(false)
-      })
-    }
-  }, [reviseBlogs])
+      dispatch(initializeBlogs())
+  }, [])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(setUser(user))
       blogService.setToken(user.token)
     }
   }, [])
@@ -53,12 +52,11 @@ const App = () => {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
-      setUser(user)
+      dispatch(setUser(user))
       setUsername('')
       setPassword('')
     } catch (exception) {
-      setMessage('wrong username or password')
-      setTimeout(() => setMessage(null), 5000)
+      dispatch(setNotification('wrong username or password'))
     }
   }
 
@@ -69,39 +67,17 @@ const App = () => {
   const blogFormRef = useRef()
 
   const addBlog = async (blogObject) => {
-    try {
-      blogFormRef.current.toggleVisibility()
-      const returnedBlog = await blogService.create(blogObject)
-      setReviseBlogs(true)
-      setBlogs(blogs.concat(returnedBlog))
-      setMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
-      setTimeout(() => setMessage(null), 5000)
-    } catch (exception) {
-      setMessage('missing title or url')
-      setTimeout(() => setMessage(null), 5000)
-    }
+    blogFormRef.current.toggleVisibility()
+    dispatch(insertBlog(blogObject))
   }
 
   const updateBlog = async (newBlogObject, id) => {
-    const returnedBlog = await blogService.update(newBlogObject, id)
-    setReviseBlogs(true)
-    setMessage(`likes of blog ${returnedBlog.title} by ${returnedBlog.author} increased`)
-    setTimeout(() => setMessage(null), 5000)
+    dispatch(addLikes(newBlogObject, id))
   }
 
   const deleteBlog = async (blogToDelete) => {
-    if (window.confirm(`Remove blog ${blogToDelete.title} by ${blogToDelete.author}`)) {
-      try {
-        await blogService.remove(blogToDelete.id)
-        setReviseBlogs(true)
-        setBlogs(blogs.filter((blog) => blog.id !== blogToDelete.id))
-        setMessage(`blog ${blogToDelete.title} by ${blogToDelete.author} removed`)
-        setTimeout(() => setMessage(null), 5000)
-      } catch (exception) {
-        setMessage('invalid token')
-        setTimeout(() => setMessage(null), 5000)
-      }
-    }
+    if (window.confirm(`Remove blog ${blogToDelete.title} by ${blogToDelete.author}`))
+        dispatch(removeBlog(blogToDelete))
   }
 
   const loginForm = () => (
