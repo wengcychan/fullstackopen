@@ -43,13 +43,15 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
-      <Notification />
+      <Router>
+      <Link to="/">blogs</Link>
+      <Link to="/users">users</Link>
       <form onClick={handleLogout}>
         {user.name} logged in
         <button type="click">logout</button>
       </form>
-      <Router>
+      <h2>blog app</h2>
+      <Notification />
         <Routes>
           <Route path="/" element={<Blogs />} />
           <Route path="/users" element={<Users users={ users } />} />
