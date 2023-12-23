@@ -34,6 +34,7 @@ export const createBlog = (blogObject) => {
 	return async dispatch => {
 		try {
 			const returnedBlog = await blogService.create(blogObject)
+			console.log(returnedBlog)
 			dispatch(appendBlog(returnedBlog))
 			dispatch(setNotification(`a new blog ${blogObject.title} by ${blogObject.author} added`))
 		}
@@ -60,6 +61,14 @@ export const addLikes = (newBlogObject, id) => {
 		const returnedBlog = await blogService.update(newBlogObject, id)
 		dispatch(updateBlog({ returnedBlog, id }))
 		dispatch(setNotification(`likes of blog ${returnedBlog.title} by ${returnedBlog.author} increased`))
+	}
+}
+
+export const addComments = (newBlogObject, id) => {
+	return async dispatch => {
+		const returnedBlog = await blogService.update(newBlogObject, id)
+		dispatch(updateBlog({ returnedBlog, id }))
+		dispatch(setNotification(`comment of blog ${returnedBlog.title} by ${returnedBlog.author} added`))
 	}
 }
 
