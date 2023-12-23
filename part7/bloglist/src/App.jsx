@@ -1,15 +1,24 @@
-import { useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
+import User from './components/User'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import blogService from './services/blogs'
+import userService from './services/users'
 import { initializeBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 
 const App = () => {
+
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    userService.getAll()
+    .then(users => setUsers(users))
+  }, [])
 
   const dispatch = useDispatch()
 
@@ -42,7 +51,8 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Blogs />}/>
-          <Route path="/users" element={<Users />}/>
+          <Route path="/users" element={<Users users={ users } />}/>
+          <Route path="/users/:id" element={<User users={ users } />}></Route>
         </Routes>
       </Router>
     </div>
