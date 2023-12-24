@@ -16,7 +16,7 @@ interface CalculatorInput {
 const parseExArguments = (args: string[]): CalculatorInput => {
 	if (args.length < 4) throw new Error('Not enough arguments');
 
-	let target: number;
+	let target: number = 0;
 	let exercises: number[] = [];
 
 	for (let i = 2; i < args.length; ++i)
