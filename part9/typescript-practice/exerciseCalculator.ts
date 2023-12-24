@@ -17,7 +17,7 @@ const parseExArguments = (args: string[]): CalculatorInput => {
 	if (args.length < 4) throw new Error('Not enough arguments');
 
 	let target: number = 0;
-	let exercises: number[] = [];
+	const exercises: number[] = [];
 
 	for (let i = 2; i < args.length; ++i)
 	{
@@ -32,10 +32,10 @@ const parseExArguments = (args: string[]): CalculatorInput => {
 	return {
 		target,
 		exercises
-	}
-}
+	};
+};
 
-const calculateExercise = (exercises: number[], target: number): Result => {
+export const calculateExercise = (exercises: number[], target: number): Result => {
 
 	const average: number = exercises.reduce((total, exercise) => total += exercise, 0) / exercises.length;
 	let rating: number;
@@ -66,8 +66,8 @@ const calculateExercise = (exercises: number[], target: number): Result => {
 		ratingDescription,
 		target,
 		average,
-	}
-}
+	};
+};
 
 try {
 	const{ target, exercises } = parseExArguments(process.argv);
