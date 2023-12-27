@@ -67,7 +67,7 @@ const Part = ({part}: {part: CoursePart}) => {
       );
     default:
       return assertNever(part);   
-  };
+  }
 };
 
 const Content = ({parts}: {parts: CoursePart[]}) => (
