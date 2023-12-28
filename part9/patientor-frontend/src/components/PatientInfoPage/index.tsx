@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Patient, Gender, Diagnosis } from "../../types";
 
 import patientService from "../../services/patients";
+import Entries from "./Entries";
 
 import FemaleIcon from '@mui/icons-material/Female';
 import MaleIcon from '@mui/icons-material/Male';
@@ -38,32 +39,13 @@ const PatientInfoPage = ({diagnoses}: {diagnoses: Diagnosis[]}) => {
     else
       return <TransgenderIcon/>;
   };
-  
-  const generateCodeDescription = (code: string) : string | null => {
-    const diagnosis = diagnoses.find(diagnosis => diagnosis.code === code);
-    if (!diagnosis)
-      return null;
-    return diagnosis.name;
-  };
 
   return (
     <div>
       <h2>{patient.name} <span>{generateGenderIcon(patient.gender)}</span></h2>
-      <p>ssn: {patient.ssn}</p>
-      <p>occupation: {patient.occupation}</p>
-      <h3>entries</h3>
-      {
-        patient.entries.map(entry => {
-          const {id, date, description, diagnosisCodes} = entry;
-          return (
-            <div key={id}>
-              <p>{date} <i>{description}</i></p>
-              <ul>
-                { diagnosisCodes && diagnosisCodes.map(code => <li key={code}>{code} {generateCodeDescription(code)} </li>) }
-              </ul>
-            </div>
-        );
-      })}
+      <p>SSN: {patient.ssn}</p>
+      <p>Occupation: {patient.occupation}</p>
+      <Entries patient={patient} diagnoses={diagnoses}/>
     </div>
   );
 };
