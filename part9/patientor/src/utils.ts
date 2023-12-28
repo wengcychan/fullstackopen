@@ -5,6 +5,13 @@ const isString = (text: unknown): text is string => {
 	return (typeof text === 'string' || text instanceof String);
 };
 
+// const isStringArray = (text: unknown): text is string[] => {
+//   if (!Array.isArray(text)) {
+//     return false;
+//   }
+//   return text.every((item) => typeof item === 'string');
+// };
+
 const isDate = (date: string): boolean => {
 	return Boolean(Date.parse(date));
 };
@@ -30,6 +37,12 @@ const parseGender = (gender: unknown): string => {
 		throw new Error('Incorrect or missing gender.');
 	return gender;
 };
+
+// const parseEntries = (entries: unknown): string[] => {
+// 	if (!entries || !isStringArray(entries))
+// 		throw new Error('Incorrect or missing entries.');
+// 	return entries;
+// };
 
 const toNewPatient = (object: unknown): NewPatientEntry => {
 
