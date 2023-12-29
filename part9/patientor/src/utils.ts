@@ -19,7 +19,7 @@ const isGender = (param: string): param is Gender => {
 
 const isHealthCheckRating = (param: number): param is HealthCheckRating => {
 	return Object.values(HealthCheckRating).includes(param);
-}
+};
 
 const parseString = (text: unknown): string => {
 	if (!text || !isString(text))
@@ -50,7 +50,7 @@ const parseHealthCheckRating = (rating: unknown): number => {
 	if (rating === null || !isNumber(rating) || !isHealthCheckRating(rating))
 		throw new Error('Incorrect or missing Health Check Rating.');
 	return rating;
-}
+};
 
 const assertNever = (value: never): never => {
 	throw new Error(
@@ -76,7 +76,7 @@ const parseEntry = (object: object): NewEntryWithoutBase => {
 								date: parseDate(object.discharge.date),
 								criteria: parseString(object.discharge.criteria)
 							}
-						}
+						};
 					}
 				}
 				break;
@@ -89,7 +89,7 @@ const parseEntry = (object: object): NewEntryWithoutBase => {
 							type: object.type,
 							employerName: parseString(object.employerName),
 							sickLeave: undefined
-						}
+						};
 					}
 					else
 					{
@@ -103,7 +103,7 @@ const parseEntry = (object: object): NewEntryWithoutBase => {
 								startDate: parseDate(object.sickLeave.startDate),
 								endDate: parseDate(object.sickLeave.endDate),
 							}
-						}
+						};
 					}
 				}
 				break;
@@ -112,14 +112,14 @@ const parseEntry = (object: object): NewEntryWithoutBase => {
 					return {
 						type: object.type,
 						healthCheckRating: parseHealthCheckRating(object.healthCheckRating)
-					}
+					};
 					break;
 			default:
 				return assertNever(object as never);
 		}
 	}
 	throw new Error('Incorrect data: some fields are missing');
-}
+};
 
 export const toNewPatient = (object: unknown): NewPatientEntry => {
 

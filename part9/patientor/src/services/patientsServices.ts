@@ -37,7 +37,7 @@ const addNewEntry = (entry: NewEntryWithoutId, patientId: string): Entry => {
 		id: entryId,
 		...entry
 	};
-	const patient = patients.find(patient => patient.id === patientId)
+	const patient = patients.find(patient => patient.id === patientId);
 	if (!patient)
 		throw new Error('Incorrect id');
 	patient.entries.push(newEntry);
