@@ -1,4 +1,4 @@
-import { OccupationalHealthcareEntry } from "../../types";
+import { OccupationalHealthcareEntry } from "../../../types";
 
 const OccupationalHealthcareEntryInfo = ({entry}: {entry: OccupationalHealthcareEntry}) => (
 	<div>

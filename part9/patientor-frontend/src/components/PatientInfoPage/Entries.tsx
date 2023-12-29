@@ -1,9 +1,9 @@
 import { Container } from '@mui/material';
 
 import { Patient, Entry, Diagnosis } from "../../types";
-import HospitalEntryInfo from "./HospitalEntryInfo";
-import OccupationalHealthcareEntryInfo from "./OccupationalHealthcareEntryInfo";
-import HealthCheckInfo from "./HealthCheckInfo";
+import HospitalEntryInfo from "./EntryInfo/HospitalEntryInfo";
+import OccupationalHealthcareEntryInfo from "./EntryInfo/OccupationalHealthcareEntryInfo";
+import HealthCheckInfo from "./EntryInfo/HealthCheckInfo";
 
 const Entries = ({patient, diagnoses} : {patient: Patient, diagnoses: Diagnosis[]}) => {
 

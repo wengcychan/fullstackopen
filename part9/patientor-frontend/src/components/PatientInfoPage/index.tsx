@@ -48,7 +48,7 @@ const PatientInfoPage = ({diagnoses}: {diagnoses: Diagnosis[]}) => {
       <h2>{patient.name} <span>{generateGenderIcon(patient.gender)}</span></h2>
       <p>SSN: {patient.ssn}</p>
       <p>Occupation: {patient.occupation}</p>
-      {showAddEntriesForm && <AddEntriesForm patient={patient} setPatient={setPatient} setShowAddEntriesForm={setShowAddEntriesForm}/>}
+      {showAddEntriesForm && <AddEntriesForm patient={patient} setPatient={setPatient} setShowAddEntriesForm={setShowAddEntriesForm} diagnoses={diagnoses}/>}
       <Entries patient={patient} diagnoses={diagnoses}  />
       <Button variant="contained" onClick={() => setShowAddEntriesForm(true)}>
 				Add new entry

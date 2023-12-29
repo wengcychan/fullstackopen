@@ -1,4 +1,4 @@
-import { HealthCheckEntry, HealthCheckRating } from "../../types";
+import { HealthCheckEntry, HealthCheckRating } from "../../../types";
 
 const HealthCheckInfo = ({entry}: {entry: HealthCheckEntry}) => (
 	<div>
