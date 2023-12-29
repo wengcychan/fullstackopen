@@ -4,7 +4,7 @@ export interface Diagnose {
 	"latin"?: string;
 }
 
-interface BaseEntry {
+export interface BaseEntry {
   id: string;
   description: string;
   date: string;
@@ -59,6 +59,12 @@ export interface Patient {
 export type NonSensitivePatientEntry = Omit<Patient, 'ssn' | 'entries'>;
 
 export type NewPatientEntry = Omit<Patient, 'id' | 'entries'>;
+
+type UnionOmit<T, K extends string | number | symbol> = T extends unknown ? Omit<T, K> : never;
+
+export type NewEntryWithoutId = UnionOmit<Entry, 'id'>;
+
+export type NewEntryWithoutBase = UnionOmit<NewEntryWithoutId, keyof BaseEntry>;
 
 export enum Gender {
 	Male = 'male',
