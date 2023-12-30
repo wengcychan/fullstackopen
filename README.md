@@ -75,3 +75,26 @@ Part 6 introduces the Redux library. It also explores the React Query library fo
 - **[unicafe-redux](part6/unicafe-redux/)**
 
 🚀 Skills: `Redux` `React Query`
+
+### Part 7 - React router, custom hooks, styling app with CSS and webpack
+
+Part 7 explores React router, custom hooks and Webpack. It also introduces two UI frameworks, Bootstrap and MaterialUI.
+
+- **[bloglist](part7/bloglist/)**
+- **[country-hook](part7/country-hook/)**
+- **[routed-anecdotes](part7/routed-anecdotes/)**
+
+🚀 Skills: `React router` `Custom hooks` `Webpack` `Bootstrap` `MaterialUI`
+
+### Part 9 - TypeScript
+
+Part 9 focuses on using TypeScript for both frontend and backend development.
+
+- **[courseinfo](part9/courseinfo/)**
+- **[flight-diary-backend](part9/flight-diary-backend/)**
+- **[flight-diary-frontend](part9/flight-diary-frontend/)**
+- **[patientor-backend](part9/patientor-backend/)**
+- **[flight-diary-frontend](part9/flight-diary-frontend/)**
+- **[typescript-practice](part9/typescript-practice/)**
+
+🚀 Skills: `TypeScript`
