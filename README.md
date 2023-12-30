@@ -94,7 +94,7 @@ Part 9 focuses on using TypeScript for both frontend and backend development.
 - **[flight-diary-backend](part9/flight-diary-backend/)**
 - **[flight-diary-frontend](part9/flight-diary-frontend/)**
 - **[patientor-backend](part9/patientor-backend/)**
-- **[flight-diary-frontend](part9/flight-diary-frontend/)**
+- **[patientor-frontend](part9/patientor-frontend/)**
 - **[typescript-practice](part9/typescript-practice/)**
 
 🚀 Skills: `TypeScript`
